@@ -75,22 +75,22 @@ main()
       fi
 
       if $show_cpu; then
-        tmux set-option -g  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu.sh) "
+        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu.sh) "
         powerbg=${pink}
       fi
 
       if $show_gpu; then
-        tmux set-option -g  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/gpu.sh) "
+        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/gpu.sh) "
         powerbg=${pink}
       fi
 
       if $show_ram; then
-        tmux set-option -g  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/ram.sh) "
+        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/ram.sh) "
         powerbg=${pink}
       fi
 
       if $show_gram; then
-        tmux set-option -g  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/gram.sh) "
+        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/gram.sh) "
         powerbg=${pink}
       fi
 
@@ -117,19 +117,19 @@ main()
       fi
 
       if $show_cpu; then
-        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu.sh) "
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu.sh) "
       fi
 
       if $show_gpu; then
-        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/gpu.sh) "
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/gpu.sh) "
       fi
 
       if $show_ram; then
-        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/ram.sh) "
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/ram.sh) "
       fi
 
       if $show_gram; then
-        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/gram.sh) "
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/gram.sh) "
       fi
 
       if $show_network; then
