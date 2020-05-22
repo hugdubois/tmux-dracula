@@ -118,7 +118,7 @@ main()
       tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}]${date_format}"
 
       # window tabs 
-      tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W #[fg=${dark_purple},bg=${gray}]${left_sep}"
+      tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I:#W:#F #[fg=${dark_purple},bg=${gray}]${left_sep}"
   else
     tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
 
@@ -163,7 +163,7 @@ main()
     tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] ${date_format}"
 
     # window tabs 
-    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
+    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I:#W:#F "
 
   fi
   
