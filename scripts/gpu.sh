@@ -4,7 +4,7 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$CURRENT_DIR/helpers.sh"
 
-gpu_percentage_format="%3.1f%%"
+gpu_percentage_format="⛀ %3.1f%%"
 
 print_gpu_percentage() {
   gpu_percentage_format=$(get_tmux_option "@gpu_percentage_format" "$gpu_percentage_format")
@@ -14,7 +14,7 @@ print_gpu_percentage() {
   elif command_exists "cuda-smi"; then
     loads=$(cuda-smi)
   else
-    echo "No GPU"
+    echo "⛀ No"
     return
   fi
   loads=$(echo "$loads" | sed -nr 's/.*\s([0-9]+)%.*/\1/p')

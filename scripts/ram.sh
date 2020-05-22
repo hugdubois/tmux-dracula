@@ -6,7 +6,7 @@ export LC_ALL=C
 
 source "$CURRENT_DIR/helpers.sh"
 
-ram_percentage_format="%3.1f%%"
+ram_percentage_format="⛃ %3.1f%%"
 
 sum_macos_vm_stats() {
   grep -Eo '[0-9]+' \

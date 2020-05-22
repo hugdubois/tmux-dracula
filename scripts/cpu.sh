@@ -4,7 +4,7 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$CURRENT_DIR/helpers.sh"
 
-cpu_percentage_format="%3.1f%%"
+cpu_percentage_format="⛂ %3.1f%%"
 
 print_cpu_percentage() {
   cpu_percentage_format=$(get_tmux_option "@cpu_percentage_format" "$cpu_percentage_format")

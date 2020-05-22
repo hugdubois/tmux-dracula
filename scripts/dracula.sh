@@ -18,12 +18,18 @@ main()
   # set configuration option variables
   show_battery=$(get_tmux_option "@dracula-show-battery" true)
   show_cpu=$(get_tmux_option "@dracula-show-cpu" true)
-  show_gpu=$(get_tmux_option "@dracula-show-gpu" true)
   show_ram=$(get_tmux_option "@dracula-show-ram" true)
-  show_gram=$(get_tmux_option "@dracula-show-gram" true)
+  show_gpu=$(get_tmux_option "@dracula-show-gpu" false)
+  show_gram=$(get_tmux_option "@dracula-show-gram" false)
+  show_disk01=$(get_tmux_option "@dracula-show-disk01" true)
+  show_disk02=$(get_tmux_option "@dracula-show-disk02" true)
   show_network=$(get_tmux_option "@dracula-show-network" true)
   show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
-  show_military=$(get_tmux_option "@dracula-military-time" true)
+  date_format=$(get_tmux_option "@dracula-date-format" "%Y-%m-%d %R")
+  #date_format=$(get_tmux_option "@dracula-date-format" "%Y-%m-%d %R #(date +%Z)")
+  #date_format=$(get_tmux_option "@dracula-date-format" "%a %m/%d %I:%M %p #(date +%Z)") 
+  #date_format=$(get_tmux_option "@dracula-date-format" "%a %m/%d %R #(date +%Z)")
+
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -70,28 +76,38 @@ main()
       powerbg=${gray}
 
       if $show_battery; then
-        tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+        tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh)"
         powerbg=${pink}
       fi
 
-      if $show_cpu; then
-        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu.sh) "
-        powerbg=${pink}
-      fi
+      if $show_cpu || $show_ram || $show_gpu || $show_gram || $show_disk01 || $show_disk02; then
+        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}]"
 
-      if $show_gpu; then
-        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/gpu.sh) "
-        powerbg=${pink}
-      fi
+        if $show_cpu; then
+          tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}]#($current_dir/cpu.sh) "
+        fi
 
-      if $show_ram; then
-        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/ram.sh) "
-        powerbg=${pink}
-      fi
+        if $show_ram; then
+          tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}]#($current_dir/ram.sh) "
+        fi
 
-      if $show_gram; then
-        tmux set-option -ga  status-right "#[fg=${orange},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${orange}] #($current_dir/gram.sh) "
-        powerbg=${pink}
+        if $show_gpu; then
+          tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}]#($current_dir/gpu.sh) "
+        fi
+
+        if $show_gram; then
+          tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}]#($current_dir/gram.sh) "
+        fi
+
+        if $show_disk01; then
+          tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}]#($current_dir/disk01.sh) "
+        fi
+
+        if $show_disk02; then
+          tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}]#($current_dir/disk02.sh)"
+        fi
+
+        powerbg=${orange}
       fi
 
       if $show_network; then
@@ -99,11 +115,7 @@ main()
         powerbg=${cyan}
       fi
 
-      if $show_military; then
-	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R #(date +%Z) "
-      else
-	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
-      fi
+      tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}]${date_format}"
 
       # window tabs 
       tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W #[fg=${dark_purple},bg=${gray}]${left_sep}"
@@ -112,38 +124,46 @@ main()
 
     tmux set-option -g  status-right ""
 
-      if $show_battery; then
-        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
-      fi
+    if $show_battery; then
+      tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+    fi
 
+    if $show_cpu || $show_ram || $show_gpu || $show_gram || $show_disk01 || $show_disk02; then
       if $show_cpu; then
-        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu.sh) "
-      fi
-
-      if $show_gpu; then
-        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/gpu.sh) "
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/cpu.sh)"
       fi
 
       if $show_ram; then
-        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/ram.sh) "
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/ram.sh)"
+      fi
+
+      if $show_gpu; then
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/gpu.sh)"
       fi
 
       if $show_gram; then
-        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/gram.sh) "
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/gram.sh)"
       fi
 
-      if $show_network; then
-        tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}]#($current_dir/network.sh) "
+      if $show_disk01; then
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/disk01.sh)"
       fi
 
-      if $show_military; then
-	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %R #(date +%Z) "
-      else
-	tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] %a %m/%d %I:%M %p #(date +%Z) "
+      if $show_disk02; then
+        tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] #($current_dir/disk02.sh)"
       fi
 
-      # window tabs 
-      tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
+      tmux set-option -ga  status-right "#[fg=${dark_gray},bg=${orange}] "
+    fi
+
+    if $show_network; then
+      tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}]#($current_dir/network.sh)"
+    fi
+
+    tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] ${date_format}"
+
+    # window tabs 
+    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W "
 
   fi
   
