@@ -46,7 +46,7 @@ battery_status()
 	if [ $status = 'discharging' ] || [ $status = 'Discharging' ]; then
 		echo ''
 	else
-		echo ' ⌁'
+		echo '⌁'
 	fi
 }
 
@@ -55,7 +55,7 @@ main()
 	bat_stat=$(battery_status)
 	bat_perc=$(battery_percent)
 	#echo "♥ $bat_stat$bat_perc"
-	echo "⚡$bat_perc%$bat_stat"
+	echo "⚡$bat_perc% $bat_stat"
 }
 
 #run main driver program

@@ -16,6 +16,7 @@ main()
   current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
   # set configuration option variables
+  show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
   show_battery=$(get_tmux_option "@dracula-show-battery" true)
   show_cpu=$(get_tmux_option "@dracula-show-cpu" true)
   show_ram=$(get_tmux_option "@dracula-show-ram" true)
@@ -24,7 +25,6 @@ main()
   show_disk01=$(get_tmux_option "@dracula-show-disk01" true)
   show_disk02=$(get_tmux_option "@dracula-show-disk02" true)
   show_network=$(get_tmux_option "@dracula-show-network" true)
-  show_powerline=$(get_tmux_option "@dracula-show-powerline" false)
   date_format=$(get_tmux_option "@dracula-date-format" "%Y-%m-%d %R")
   #date_format=$(get_tmux_option "@dracula-date-format" "%Y-%m-%d %R #(date +%Z)")
   #date_format=$(get_tmux_option "@dracula-date-format" "%a %m/%d %I:%M %p #(date +%Z)") 
@@ -71,7 +71,7 @@ main()
 
   if $show_powerline; then
 
-      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺  #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}        " 
+      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} #S|#I:#P#[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep} " 
       tmux set-option -g  status-right ""
       powerbg=${gray}
 
@@ -115,12 +115,12 @@ main()
         powerbg=${cyan}
       fi
 
-      tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}]${date_format}"
+      tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}]${date_format} "
 
       # window tabs 
       tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I:#W:#F #[fg=${dark_purple},bg=${gray}]${left_sep}"
   else
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ☺ " 
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} #S|#I:#P " 
 
     tmux set-option -g  status-right ""
 
@@ -160,14 +160,14 @@ main()
       tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}]#($current_dir/network.sh)"
     fi
 
-    tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] ${date_format}"
+    tmux set-option -ga status-right "#[fg=${dark_purple},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${white},bg=${dark_purple}] ${date_format} "
 
     # window tabs 
     tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I:#W:#F "
 
   fi
   
-  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W "
+  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I:#W:#F "
 }
 
 # run main function
